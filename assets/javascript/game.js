@@ -113,7 +113,7 @@ $(document).ready(function() {
       $("#game-message").empty();
 
       // Set the user's character
-      initializeCharacter(obiWanKenobi);
+      initializeCharacter(oldbenkenobi);
       characterSelected = true;
 
       // Display the chosen character
@@ -128,7 +128,7 @@ $(document).ready(function() {
         $("#game-message").empty();
 
         // Set the user's enemy
-        initializeDefender(obiWanKenobi);
+        initializeDefender(oldbenkenobi);
         defenderSelected = true;
 
         // Add the character to the defender section
@@ -194,7 +194,7 @@ $(document).ready(function() {
         $("#game-message").empty();
 
         // Set the user's enemy
-        initializeDefender(ahsoka);
+        initializeDefender(ahsokatano);
         defenderSelected = true;
 
         // Add the character to the defender section 
