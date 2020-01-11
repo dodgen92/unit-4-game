@@ -1,0 +1,88 @@
+body {
+	background: url('../images/background_opacity0.1.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;	
+}
+
+.jumbotron {
+    padding: 0.5em 0.6em;
+    margin: 1.0em 0.0em 1.0em 0.0em;
+    opacity: 0.7;
+}
+
+.jumbotron h1 {
+	font-size: 4em;
+    color: #0c1a63;
+}
+
+.jumbotron h2 {
+	font-size: 2em;
+    color: #1a34b8;
+}
+
+.character-image {
+	display: inline-block;
+  	height: 145px;
+	padding: 0px 20px 0px 20px;
+	margin: 0px 2px 0px 2px;
+	background-color: white;
+	border: solid;
+	border-color: green;
+}
+
+.character-image p {
+	text-align: center;
+	margin: 0px 2px 0px 2px;
+}
+
+#chosen-character {
+	height: 190px;
+}
+
+#chosen-character h2 {
+	font-size: 2em;
+    color: #485bf0;
+}
+
+.chosen-character {
+	border-color: #dd48f0;
+	background-color: #5bf048;
+}
+
+#enemies-available h2 {
+	font-size: 2em;
+    color: #8948f0;
+}
+
+.enemy-character {
+	border-color: #48f0dd;
+	background-color: #f0485b;
+	margin: 0px 2px 0px 2px;
+}
+
+#fight-section h2 {
+	font-size: 2em;
+    color: #f0485b;
+}
+
+#defender-section {
+	height: 210px;
+}
+
+#defender-section h2 {
+	font-size: 2em;
+    color: #f0485b;
+}
+
+.defender-character {
+	border-color: #485bf0;
+	background-color: #f0dd48;
+}
+
+#game-message {
+	font-size: 1.5em;
+	font-weight: bold;
+    color: 	#f0dd48;
+}
