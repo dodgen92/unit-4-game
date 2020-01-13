@@ -1,88 +1,68 @@
 body {
-	background: url('../images/starwarsbackground.jpeg') no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
+    color: silver !important;
+    background-color: black;
+    background-image: url("../images/babyyoda.jpg");
+    background-position: center;
     background-size: cover;
-    -o-background-size: cover;	
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    font-size: 1.1em !important;
+    font-family: 'Nunito', sans-serif !important;
 }
 
-.jumbotron {
-    padding: 0.5em 0.6em;
-    margin: 1.0em 0.0em 1.0em 0.0em;
-    opacity: 0.7;
+.shadow {
+    text-shadow: 2px 1px 4px rgb(0, 0, 0);
 }
 
-.jumbotron h1 {
-	font-size: 4em;
-    color: #0c1a63;
+#firstScreen {
+    min-height: 100%;
+    position: absolute;
+    text-align: center;
+    padding-top: 5%;
+    color: turquoise ;
 }
 
-.jumbotron h2 {
-	font-size: 2em;
-    color: #1a34b8;
+.ctr {
+    margin: 0 auto !important;
+    text-align: center;
 }
 
-.character-image {
-	display: inline-block;
-  	height: 145px;
-	padding: 0px 20px 0px 20px;
-	margin: 0px 2px 0px 2px;
-	background-color: white;
-	border: solid;
-	border-color: green;
+.bg-trans {
+    background: rgba(0, 0, 0, 0.527) !important;
+    width: 100%;
+    height: 100vh;
+    margin: 0 auto;
 }
 
-.character-image p {
-	text-align: center;
-	margin: 0px 2px 0px 2px;
+.paddingTop {
+    padding-top: 1%;
 }
 
-#chosen-character {
-	height: 190px;
+.btn {
+    text-align: center;
 }
 
-#chosen-character h2 {
-	font-size: 2em;
-    color: #485bf0;
+.animated {
+    animation-duration: 1.5s;
 }
 
-.chosen-character {
-	border-color: #dd48f0;
-	background-color: #5bf048;
+#msg {
+    font-size: 1.2em;
 }
 
-#enemies-available h2 {
-	font-size: 2em;
-    color: #8948f0;
+#globalMsg {
+    padding-top: 10%;
+    text-align: center;
+    font-size: 3em;
+    color: teal
 }
 
-.enemy-character {
-	border-color: #48f0dd;
-	background-color: #f0485b;
-	margin: 0px 2px 0px 2px;
-}
 
-#fight-section h2 {
-	font-size: 2em;
-    color: #f0485b;
-}
-
-#defender-section {
-	height: 210px;
-}
-
-#defender-section h2 {
-	font-size: 2em;
-    color: #f0485b;
-}
-
-.defender-character {
-	border-color: #485bf0;
-	background-color: #f0dd48;
-}
-
-#game-message {
-	font-size: 1.5em;
-	font-weight: bold;
-    color: 	#f0dd48;
+footer {
+    position: absolute;
+    font-size: 0.8em;
+    bottom: 0;
+    left: 0;
+    color: rgb(207, 207, 207);
+    background-color: rgba(0, 0, 0, 0.76);
 }

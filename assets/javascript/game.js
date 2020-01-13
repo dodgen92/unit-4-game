@@ -1,299 +1,200 @@
-// ----- Global Variables ----- //
+// Global variables
+var baseAttack = 0; // original attack strength
+var player; // holds the player Object
+var defender; // holds the current defender Object
+var charArray = []; // array that stores the game characters (Objects)
+var playerSelected = false; // flag to mark if we picked a player yet
+var defenderSelected = false; // flag to mark if we picked a defender
 
-// Has the user selected their character
-var characterSelected = false;
 
-// Has the user selected the defender
-var defenderSelected = false;
-
-// Variable to store the user's chosen character
-var character = {};
-
-// Variable to store the chosen enemy
-var defender = {};
-
-// Number of enemies defeated
-var enemiesDefeated = 0;
-
-// Boolean to indicate whether or not the game is over
-gameOver = false;
-
-// ----- Character Objects ----- //
-
-var oldbenkenobi = {
-  name: "old Ben Kenobi",
-  health: 220,
-  baseAttack: 10,
-  attack: 10
-};
-
-var kananjarrus = {
-  name: "Kanan Jarrus",
-  health: 140,
-  baseAttack: 15,
-  attack: 15
-};
-
-var ahsokatano = {
-  name: "Ahsoka Tano",
-  health: 75,
-  baseAttack: 40,
-  attack: 40
-};
-
-var Generalgreivous = {
-  name: "General Greivous",
-  health: 100,
-  baseAttack: 30,
-  attack: 30
-};
-
-// ----- Helper Functions ----- //
-
-// This function will initialize the character value from the global object variables defined above
-function initializeCharacter(chosenCharacter) {
-  character.name = chosenCharacter.name;
-  character.health = chosenCharacter.health;
-  character.baseAttack = chosenCharacter.baseAttack;
-  character.attack = chosenCharacter.attack;
+// Constructor
+function Character(name, hp, ap, counter, pic) {
+    this.name = name;
+    this.healthPoints = hp;
+    this.attackPower = ap;
+    this.counterAttackPower = counter;
+    this.pic = pic;
 }
 
-// This function will initialize the enemy's value from the global object variables defined above
-function initializeDefender(chosenDefender) {
-  defender.name = chosenDefender.name;
-  defender.health = chosenDefender.health;
-  defender.baseAttack = chosenDefender.baseAttack;
-  defender.attack = chosenDefender.attack;
+
+// Increase the attack strength (this attack strength + original attack strength)
+Character.prototype.increaseAttack = function () {
+    this.attackPower += baseAttack;
+};
+
+// Performs an attack
+Character.prototype.attack = function (Obj) {
+    Obj.healthPoints -= this.attackPower;
+    $("#msg").html("You attacked " +
+        Obj.name + "for " + this.attackPower + " damage points.");
+    this.increaseAttack();
+};
+
+// Performs a counter attack
+Character.prototype.counterAttack = function (Obj) {
+    Obj.healthPoints -= this.counterAttackPower;
+    $("#msg").append("<br>" + this.name + " counter attacked you for " + this.counterAttackPower + " damage points.");
+};
+
+function initCharacters() {
+    var ahsoka = new Character("Ahsoka Tano, Jedi Exile", 100, 10, 5, "./assets/images/ahsoka.jpg");
+    var oldben = new Character("Old Ben Kenobi", 200, 50, 30, "./assets/images/oldben.jpg");
+    var kanan = new Character("Kanan Jarrus, disgraced padawan", 150, 15, 2, "./assets/images/kanan.jpg");
+    var grievous = new Character("The cowardly General Grievous", 180, 30, 12, "./assets/images/grievous.jpg");
+    charArray.push(ahsoka, oldben, kanan, grievous);
+// Initialize all the characters
+
 }
 
-// This function will move the remaining characters to the enemies section
-function moveToEnemies() {
-  $(".available-character").removeClass("available-character").addClass("enemy-character");
-  $("#enemies-available").append($(".enemy-character"));
+// "Save" the original attack value
+function setBaseAttack(Obj) {
+    baseAttack = Obj.attackPower;
 }
 
-// This function will reset the state of the game
-function resetGame() {
-  // Reset all the health values to the original
-  $("#old-ben-kenobi-character").children(".health").html(oldbenkenobi.health);
-  $("#kanan-jarrus-character").children(".health").html(kannanjarrus.health);
-  $("#ahsoka-tano-character").children(".health").html(ahsokatano.health);
-  $("#general-grievous-character").children(".health").html(generalgrievous.health);
-
-  $(".character-image").removeClass("chosen-character enemy-character defender-character").addClass("available-character");
-  var available = $(".available-character").show();
-  $("#characters-available").html(available);
-
-  $("#game-message").empty();
-  $("#restart").hide();
-
-  characterSelected = false;
-  defenderSelected = false;
-  enemiesDefeated = 0;
-  gameOver = false;
-
-  character = {};
-  defender = {};
+// Checks if character is alive
+function isAlive(Obj) {
+    if (Obj.healthPoints > 0) {
+        return true;
+    }
+    return false;
 }
 
-// ----- Main Routine ----- //
+// Checks if the player has won
+function isWinner() {
+    if (charArray.length == 0 && player.healthPoints > 0)
+        return true;
+    else return false;
+}
 
-// Run Javascript when the HTML has finished loading
-$(document).ready(function() {
+// Create the character cards onscreen
+function characterCards(divID) {
+    $(divID).children().remove();
+    for (var i = 0; i < charArray.length; i++) {
+        $(divID).append("<div />");
+        $(divID + " div:last-child").addClass("card");
+        $(divID + " div:last-child").append("<img />");
+        $(divID + " img:last-child").attr("id", charArray[i].name);
+        $(divID + " img:last-child").attr("class", "card-img-top");
+        $(divID + " img:last-child").attr("src", charArray[i].pic);
+        $(divID + " img:last-child").attr("width", 150);
+        $(divID + " img:last-child").addClass("img-thumbnail");
+        $(divID + " div:last-child").append(charArray[i].name + "<br>");
+        $(divID + " div:last-child").append("HP: " + charArray[i].healthPoints);
+       $(divID + " idv:last-child").append();
 
-  // Hide the "Restart" button on document load
-  $("#restart").hide();
-
-  // Determine which character the user has clicked
-  $("#old-ben-kenobi-character").on("click", function () {
-    console.log("old Ben Kenobi is selected");
-
-    // User is choosing the character
-    if(characterSelected == false) {
-      $("#game-message").empty();
-
-      // Set the user's character
-      initializeCharacter(oldbenkenobi);
-      characterSelected = true;
-
-      // Display the chosen character
-      $("#old-ben-kenobi-character").removeClass("available-character").addClass("chosen-character");
-      $("#chosen-character").append(this);
-
-      // Move the remaining characters to the enemies section
-      moveToEnemies();
-    } else if ((characterSelected == true) && (defenderSelected == false)) {
-      // User is choosing the defender
-      if($("#old-ben-kenobi-character").hasClass("enemy-character")) {
-        $("#game-message").empty();
-
-        // Set the user's enemy
-        initializeDefender(oldbenkenobi);
-        defenderSelected = true;
-
-        // Add the character to the defender section
-        $("#old-ben-kenobi").removeClass("enemy-character").addClass("defender-character");
-        $("#defender-section").append(this);
-      }
     }
-  });
+}
 
-  $("#kanan-jarrus-character").on("click", function () {
-    console.log("Kanan Jarrus is selected");
-
-    // User is choosing the character
-    if(characterSelected == false) {
-      $("#game-message").empty();
-
-      // Set the user's character
-      initializeCharacter(kananjarrus);
-      characterSelected = true;
-
-      // Display the chosen character
-      $("#kanan-jarrus-character").removeClass("available-character").addClass("chosen-character");
-      $("#chosen-character").append(this);
-
-      // Move the remaining characters to the enemies section
-      moveToEnemies();
-    } else if ((characterSelected == true) && (defenderSelected == false)) {
-      // User is choosing the defender
-      if($("#kanan-jarrus-character").hasClass("enemy-character")) {
-        $("#game-message").empty();
-
-        // Set the user's enemy
-        initializeDefender(kananjarrus);
-        defenderSelected = true;
-
-        // Add the character to the defender section 
-        $("#kanan-jarrus-character").removeClass("enemy-character").addClass("defender-character");
-        $("#defender-section").append(this);
-      }
+// Update the characters pictures location on the screen (move them between divs)
+function updatePics(fromDivID, toDivID) {
+    $(fromDivID).children().remove();
+    for (var i = 0; i < charArray.length; i++) {
+        $(toDivID).append("<img />");
+        $(toDivID + " img:last-child").attr("id", charArray[i].name);
+        $(toDivID + " img:last-child").attr("src", charArray[i].pic);
+        $(toDivID + " img:last-child").attr("width", 150);
+        $(toDivID + " img:last-child").addClass("img-thumbnail");
     }
-  });
+}
 
-  $("#ahsoka-tano-character").on("click", function () {
-    console.log("Ahsoka Tano is selected");
+// plays audio file (.mp3)
+function playAudio() {
+    var audio = new Audio("./assets/media/duelofthefates8bit.mp3");
+    audio.play();
+}
 
-    // User is choosing the character
-    if(characterSelected == false) {
-      $("#game-message").empty();
 
-      // Set the user's character
-      initializeCharacter(ahsokatano);
-      characterSelected = true;
+// Change the view from the first screen to the second screen
+function changeView() {
+    $("#firstScreen").empty();
+    $("#secondScreen").show();
+}
 
-      // Display the chosen character
-      $("#ahsoka-tano-character").removeClass("available-character").addClass("chosen-character");
-      $("#chosen-character").append(this);
 
-      // Move the remaining characters to the enemies section
-      moveToEnemies();
-    } else if ((characterSelected == true) && (defenderSelected == false)) {
-      // User is choosing the defender
-      if($("#ahsoka-tano-character").hasClass("enemy-character")) {
-        $("#game-message").empty();
-
-        // Set the user's enemy
-        initializeDefender(ahsokatano);
-        defenderSelected = true;
-
-        // Add the character to the defender section 
-        $("#ahsoka-tano-character").removeClass("enemy-character").addClass("defender-character");
-        $("#defender-section").append(this);
-      }
-    }
-  });
-
-  $("#general-grievous-character").on("click", function () {
-    console.log("The cowardly General Grievous is selected");
-
-    // User is choosing the character
-    if(characterSelected == false) {
-      $("#game-message").empty();
-
-      // Set the user's character
-      initializeCharacter(generalgrievous);
-      characterSelected = true;
-
-      // Display the chosen character
-      $("#general-grievous-character").removeClass("available-character").addClass("chosen-character");
-      $("#chosen-character").append(this);
-
-      // Move the remaining characters to the enemies section
-      moveToEnemies();
-    } else if ((characterSelected == true) && (defenderSelected == false)) {
-      // User is choosing the defender
-      if($("#general-grievous-character").hasClass("enemy-character")) {
-        $("#game-message").empty();
-
-        // Set the user's enemy
-        initializeDefender(generalgrievous);
-        defenderSelected = true;
-
-        // Add the character to the defender section 
-        $("#general-grievous-character").removeClass("enemy-character").addClass("defender-character");
-        $("#defender-section").append(this);
-      }
-    }
-  });
-
-  $("#attack").on("click", function() {
-    console.log("Attack selected");
-
-    console.log("character = " + JSON.stringify(character));
-    console.log("defender = " + JSON.stringify(defender));
-
-    // User is ready to attack the defender
-    if (characterSelected && defenderSelected && !gameOver) {
-      // User attacks the defender and decreases the defender's health points
-      defender.health = defender.health - character.attack;
-      $(".defender-character").children(".health").html(defender.health);
-      $("#game-message").html("<p>You attacked " + defender.name + " for " + character.attack + " damage.<p>");
-
-      // User's attack power increases
-      character.attack = character.attack + character.baseAttack;
-
-      // If defender is still alive, they counter attack the user
-      if (defender.health > 0) {
-        character.health = character.health - defender.baseAttack;
-        $(".chosen-character").children(".health").html(character.health);
-
-        // Check if the user survives the attack
-        if (character.health > 0) {
-          $("#game-message").append("<p>" + defender.name + " attacked you back for " + defender.baseAttack + " damage.</p>");
-        } else {
-          gameOver = true;
-          $("#game-message").html("<p>You were defeated... womp womp...</p><p>Play again?</p>");
-          $("#restart").show();
+$(document).on("click", "img", function () {
+    // Stores the defender the user has clicked on in the defender variable and removes it from the charArray
+    if (playerSelected && !defenderSelected && (this.id != player.name)) {
+        for (var j = 0; j < charArray.length; j++) {
+            if (charArray[j].name == (this).id) {
+                defender = charArray[j]; // sets defender
+                charArray.splice(j, 1);
+                defenderSelected = true;
+                $("#msg").html("Click the button to attack!");
+            }
         }
-      } else {
-        // Defender is defeated
-        enemiesDefeated++;
-        defenderSelected = false;
-        $("#game-message").html("<p>You have defeated " + defender.name + ". Choose another enemy.</p>");
-        $(".defender-character").hide();
-
-        // Check if the user has won the game
-        if (enemiesDefeated === 3) {
-          gameOver = true;
-          $("#game-message").html("<p>You have won the game!!!</p><p>Play again?</p>");
-          $("#restart").show();
+        $("#defenderDiv").append(this); // appends the selected defender to the div 
+        $("#defenderDiv").addClass("animated zoomInRight");
+        $("#defenderDiv").append("<br>" + defender.name);
+        $("#defenderHealthDiv").append("HP: " + defender.healthPoints);
+        $("#defenderHealthDiv").addClass("animated zoomInRight");
+    }
+    // Stores the character the user has clicked on in the player variable and removes it from charArray
+    if (!playerSelected) {
+        for (var i = 0; i < charArray.length; i++) {
+            if (charArray[i].name == (this).id) {
+                player = charArray[i]; // sets current player
+                playAudio(); // starts theme song
+                $("body").css({
+                    "background-image": "url('./assets/images/backdrop.jpg')"
+                }); // changes the background picture according to the user selection
+                setBaseAttack(player);
+                charArray.splice(i, 1);
+                playerSelected = true;
+                changeView();
+                $("#msg").html("Pick an enemy to fight!");
+            }
         }
-      }
-    } else if (!characterSelected && !gameOver) {
-      $("#game-message").html("<p>You must first select your game character.</p>");
-    } else if (!defenderSelected && !gameOver) {
-      $("#game-message").html("<p>You must choose an enemy to fight.</p>");
+        updatePics("#game", "#defendersLeftDiv");
+        $("#playerDiv").append(this); // appends the selected player to the div
+        $("#playerDiv").addClass("animated zoomIn");
+        $("#playerDiv").append(player.name);
+        $("#playerHealthDiv").append("HP: " + player.healthPoints);
+        $("#playerHealthDiv").addClass("animated zoomIn");
     }
 
-    console.log("character = " + JSON.stringify(character));
-    console.log("defender = " + JSON.stringify(defender));
-  });
+});
 
-  $("#restart").on("click", function() {
-    console.log("Restart selected");
+// The attack button functionality
+$(document).on("click", "#attackBtn", function () {
+    if (playerSelected && defenderSelected) {
+        if (isAlive(player) && isAlive(defender)) {
+            player.attack(defender);
+            defender.counterAttack(player);
+            $("#playerHealthDiv").html("HP: " + player.healthPoints);
+            $("#defenderHealthDiv").html("HP: " + defender.healthPoints);
+            if (!isAlive(defender)) {
+                $("#defenderHealthDiv").html("DEFETED!");
+                $("#playerHealthDiv").html("Enemy defeated!");
+                $("#msg").html("Pick another enemy to battle...");
+            }
+            if (!isAlive(player)) {
+                $("#playerHealthDiv").html("YOU LOST!");
+                $("#msg").html("Try again...");
+                $("#attackBtn").html("Restart Game");
+                $(document).on("click", "#attackBtn", function () { // restarts game
+                    location.reload();
+                });
+            }
+        }
+        if (!isAlive(defender)) {
+            $("#defenderDiv").removeClass("animated zoomInRight");
+            $("#defenderHealthDiv").removeClass("animated zoomInRight");
+            $("#defenderDiv").children().remove();
+            $("#defenderDiv").html("");
+            $("#defenderHealthDiv").html("");
+            defenderSelected = false;
+            if (isWinner()) {
+                $("#secondScreen").hide();
+                $("#globalMsg").show();
+            }
+        }
+    }
+});
 
-    resetGame();
-  });
-
-}); // Main routine
+// EXECUTE
+$(document).ready(function () {
+    $("#secondScreen").hide();
+    $("#globalMsg").hide();
+    initCharacters();
+    characterCards("#game");
+});

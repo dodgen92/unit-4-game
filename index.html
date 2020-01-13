@@ -1,96 +1,88 @@
-  
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Star Wars RPG</title>
+    <title>DUEL OF THE FATES</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!--  jQuery Library -->
-  <script src="https://code.jquery.com/jquery-2.2.3.js" integrity="sha256-laXWtGydpwqJ8JA+X9x2miwmaiKhn8tVmOVEigRNtP4=" crossorigin="anonymous"></script>
-
-   <!--  Bootstrap library -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
-  <!-- Link to CSS file -->
-  <link rel="stylesheet" href="./assets/css/style.css">
+    <!-- CSS references-->
+    <link rel="stylesheet" href="./assets/css/reset.css">
+    <link rel="stylesheet" href="./assets/css/animate.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="./assets/images/favicon.ico">
 </head>
 
 <body>
+    <!--select player character -->
+    <div id="firstScreen" class="container-fluid animated zoomIn bounceOut">
+        <br>
+        <br>
+        <h1>Who will save the Galaxy?</h1>
+        <br>
+        <div id="game" class="ctr container card-deck">
+        </div>
+    </div>
+    <div id="secondScreen" class="bg-trans container-fluid animated slideInDown">
+        <div class="row">
+            <div class="col-12 ctr">
+                Enemies remaining:
+                <div id="defendersLeftDiv"></div>
+            </div>
+        </div>
+        <div class="row text-center paddingTop">
+            <div class="col-5">
+                Player:
+                <div class="container" style="width: 30%;">
+                    <div id="playerDiv"></div>
+                    <div id="playerHealthDiv"></div>
+                </div>
+            </div>
+            <div class="col-2 paddingTop">
+                <!-- VS. -->
+                <img src="assets/images/vs.jpg" alt="VS" width="100" />
+            </div>
+            <div class="col-5">
+                Enemy:
+                <div class="container">
+                    <div id="defenderDiv"></div>
+                    <div id="defenderHealthDiv"></div>
+                </div>
+            </div>
+        </div>
+        <!-- holds the button -->
+        <div class="row">
+            <div class="col-12 btn">
+                <div id="msg"></div>
+                <br>
+                <button type="button" name="attack" id="attackBtn" class="btn btn-dark btn-lg">ATTACK!</button>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid ">
+        <div id="globalMsg" class="animated fadeInUp">
+            <p class="shadow">
+                
+                <br> The Force will be with you, always!
+            </p>
+        </div>
+    </div>
+    <footer>
+        
+    </footer>
 
-  <!-- Overall Bootstrap grid -->
-  <div class="container">
 
-    <!-- Jumbotron with title -->
-    <div class="jumbotron">
-
-      <h1 class="text-center"><strong>Duel of the Fates...choose wisely</strong></h1>
-      <h2 class="text-center">Choose your legend</h2>
-
-    </div> <!-- End Jumbotron -->
-
-    <!-- Contents of the game-->
-    <div class="row">
-
-      <!-- Available characters -->
-      <div class="col-lg-12" id="characters-available">
-        <span class="character-image available-character" id="old-ben-kenobi-character">
-          <p>Old-Ben Kenobi</p>
-          <img src="assets/images/oldben.jpg" alt="old ben" id="old-ben-kenobi-image" style="width: 250px; height: 100px;">
-          <p class="health">220</p>
-        </span>
-
-        <span class="character-image available-character" id="kanan-jarrus-character">
-          <p>Disgraced Padawan, Kanan Jarrus</p>
-          <img src="assets/images/kanan.jpg" alt="Kanan Character" id="kanan-jarrus-image" style="width: 250px; height:100px;">
-          <p class="health">140</p>
-        </span>
-
-        <span class="character-image available-character" id="darth-sidious-character">
-          <p>Ahsoka Tano, Jedi Exile
-          </p>
-          <img src="assets/images/ahsoka.jpg" alt="Ahsoka Tano" id="kanan-jarrus-image" style="width: 200px; height: 100px;">
-          <p class="health">75</p>
-        </span>
-
-        <span class="character-image available-character" id="general-grievous-character">
-          <p>Coward General Greivous</p>
-          <img src="assets/images/grievous.jpg" alt="General-Grievpis-Character" id="general-grievous-character" style="width: 200px; height: 100px">
-          <p class="health">100</p>
-        </span>
-      </div> <!-- End available characters -->
-
-      <!-- Your chosen character -->
-      <div class="col-lg-12" id="chosen-character">
-        <h2>Your Legend</h2>
-      </div> <!-- End your chosen character-->
-
-      <!-- Enemies available to attack -->
-      <div class="col-lg-12" id="enemies-available">
-        <h2>Enemies Available To Attack</h2>
-      </div> <!-- End enemies available to attack -->
-
-      <!-- Fight section -->
-      <div class="col-lg-12" id="fight-section">
-        <h2>Fight Section</h2>
-        <button id="attack">Attack</button>
-      </div> <!-- End fight section -->
-
-      <!-- Defender section -->
-      <div class="col-lg-12" id="defender-section">
-        <h2>Defender</h2>
-      </div> <!-- End defender section -->
-
-      <!-- Game message section -->
-      <div class="col-lg-12" id="message-section">
-        <div id="game-message"></div>
-        <button id="restart">Restart</button>
-      </div> <!-- Game message section -->
-
-    </div> <!-- End contents of the game -->
-
-  </div> <!-- End Bootstrap grid -->
-
-  <script type="text/javascript" src="./assets/javascript/game.js"></script>
-
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js " integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN "
+        crossorigin="anonymous "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js " integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q "
+        crossorigin="anonymous "></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js " integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl "
+        crossorigin="anonymous "></script>
+    <script src="./assets/javascript/game.js "></script>
 </body>
+
 </html>
